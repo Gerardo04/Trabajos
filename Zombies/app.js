@@ -34,7 +34,7 @@ app.post('/Victimas', (request, Response) => {
 });*/
 app.post('/Victimas', (request, Response) => {
     if (!request.body.title || !request.body.body) {
-        Response.status(400).send('');
+        Response.status(400).send('_______');
         return;
     }
     entries.push({
