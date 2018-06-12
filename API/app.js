@@ -3,9 +3,12 @@ var app = express();
 
 var api = require("./routes/api");
 var api2 = require("./routes/api2");
+var api3 = require("./routes/api3");
+
 
 app.use("/api", api);
 app.use("/apiV2", api2);
+app.use("/api3", api3)
 
 app.get("/", (req, res) => {
     res.send("<h1>Pagina principal!!!</h1>");
