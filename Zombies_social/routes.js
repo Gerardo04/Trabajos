@@ -20,6 +20,32 @@ router.get("/", (req, res, next) => {
             }
             res.render("index", { zombies: zombies });
         });
+
 });
 
+router.post("/signup", (req, res, next) => {
+    var username = req.body.username;
+    var password = req.body.password;
+
+    Zombie.findOne({ username: username }, (err, zombie) => {
+        if (err) {
+            return (err);
+        }
+        if (zombie) {
+            req.flash("error", "El nombre de usuario ya lo ha tomado otro zombie");
+            return res.redirect("/signup");
+        }
+        var newZombie = new Zombie({
+            username: username,
+            password: password
+        });
+        newZombie.save(next);
+        return res.redirect("/");
+    });
+});
+
+/*router.get("/edit", ensureAuthenticated, (req, res) => {
+
+})
+*/
 module.exports = router;
