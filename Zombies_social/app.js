@@ -10,7 +10,7 @@ var flash = require("connect-flash");
 var routers = require("./routes");
 var app = express();
 
-mongoose.connect("mongobd://localhost:27017/zombie_nest");
+mongoose.connect("mongodb://localhost:27017/zombie_nest");
 app.set("port", process.env.PORT || 3000);
 
 app.set("views", path.resolve(__dirname, "views"));
