@@ -44,6 +44,21 @@ router.post("/signup", (req, res, next) => {
     });
 });
 
+router.get("/zombies/:username", (req, res, next) => {
+    Zombie.findOne({ username: req.params.username }, (err, zombie) => {
+        if (err) {
+            return next(err);
+        }
+        if (!zombie) {
+            return (404);
+        }
+        res.render("profile", { zombie: zombie });
+    });
+});
+router.get("/login", (req, res) => {
+    res.render("login");
+})
+
 /*router.get("/edit", ensureAuthenticated, (req, res) => {
 
 })
