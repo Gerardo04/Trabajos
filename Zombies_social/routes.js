@@ -23,6 +23,10 @@ router.get("/", (req, res, next) => {
 
 });
 
+router.get("/signup", (req, res) => {
+    res.render("signup");
+});
+
 router.post("/signup", (req, res, next) => {
     var username = req.body.username;
     var password = req.body.password;
@@ -57,7 +61,7 @@ router.get("/zombies/:username", (req, res, next) => {
 });
 router.get("/login", (req, res) => {
     res.render("login");
-})
+});
 
 /*router.get("/edit", ensureAuthenticated, (req, res) => {
 
