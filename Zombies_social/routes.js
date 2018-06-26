@@ -1,5 +1,6 @@
 var express = require("express");
 var Zombie = require("./models/zombie");
+var equipamiento = require("./models/addeqip");
 
 var passport = require("passport");
 var router = express.Router();
@@ -48,6 +49,55 @@ router.post("/signup", (req, res, next) => {
     });
 });
 
+/*router.get("/index2", (req, res) => {
+    res.render("index2");
+});*/
+router.get("/index2", (req, res) => {
+    equipamiento.find()
+        .exec((err, equipment) => {
+            if (err) {
+                return next(err);
+            }
+            res.render("index2", { equipment: equipment });
+        });
+});
+
+router.get("/equipment", (req, res) => {
+    res.render("equipment");
+});
+
+router.post("/equipment", (req, res, next) => {
+    var description = req.body.description;
+    var defense = req.body.defense;
+    var weight = req.body.weight;
+    var category = req.body.category;
+
+    var newEquip = new equipment({
+        description: description,
+        defense: defense,
+        weight: weight,
+        category: category
+    });
+    newEquip.save(next);
+    return res.redirect("/index2");
+});
+
+router.get("/addeqip", (req, res, next) => {
+    equipamiento.find()
+        .exec((err, equipment) => {
+            if (err) {
+                return next(err);
+            }
+            res.render("addeqip", { equipment: equipment });
+        });
+
+
+});
+
+router.get("/login", (req, res) => {
+    res.render("login");
+});
+
 router.get("/zombies/:username", (req, res, next) => {
     Zombie.findOne({ username: req.params.username }, (err, zombie) => {
         if (err) {
@@ -59,9 +109,11 @@ router.get("/zombies/:username", (req, res, next) => {
         res.render("profile", { zombie: zombie });
     });
 });
-router.get("/login", (req, res) => {
-    res.render("login");
-});
+router.post("/login", passport.authenticate("login", {
+    successRedirect: "/",
+    failureRedirect: "/login",
+    failureFlash: true
+}));
 
 /*router.get("/edit", ensureAuthenticated, (req, res) => {
 

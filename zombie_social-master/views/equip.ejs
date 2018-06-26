@@ -1,0 +1,26 @@
+<%include _header%>
+    <h1>Equipment</h1>
+    <div>
+        <ul class="nav navbar-nav navbar-right">
+            <li>
+                <a href="/Requip">Registrar Equip</a>
+            </li>
+        </ul>
+    </div>
+
+    <%equipment.forEach((equip) =>{%>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <a href="/equipment/<%=equip.description%>">
+                    <%=equip.name()%>
+                </a>
+            </div>
+            <%if (equip.defense){%>
+                <div class="panel-body">
+                    <%=equip.defense%>
+                </div>
+                <%}%>
+        </div>
+        <%})%>
+
+            <%include _footer%>

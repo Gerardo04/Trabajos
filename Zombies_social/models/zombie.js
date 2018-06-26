@@ -11,6 +11,7 @@ var zombieSchema = mongoose.Schema({
     bio: String
 });
 
+
 var donothing = () => {
 
 }
@@ -36,7 +37,7 @@ zombieSchema.pre("save", function(done) {
     });
 });
 
-zombieSchema.methods.checkPassword = (guess, done) => {
+zombieSchema.methods.checkPassword = function(guess, done) {
     bcrypt.compare(guess, this.password, (err, isMatch) => {
         done(err, isMatch);
     });
