@@ -4,7 +4,7 @@ var Zombie = require("./models/zombie");
 var LocalStrategy = require("passport-local").Strategy;
 
 module.exports = () => {
-    passport.serializeUser((Zombie, done) => {
+    passport.serializeUser((zombie, done) => {
         done(null, zombie._id);
     });
     passport.deserializeUser((id, done) => {
@@ -21,7 +21,7 @@ passport.use("login", new LocalStrategy(function(username, password, done) {
         }
         if (!zombie) {
             return
-            done(null, false, { message: "No existe zombie con ese nombre" });
+            done(null, false, { message: "No existe ningun zombie con ese nombre" });
         }
         zombie.checkPassword(password, (err, isMatch) => {
             if (err) {
@@ -30,7 +30,7 @@ passport.use("login", new LocalStrategy(function(username, password, done) {
             if (isMatch) {
                 return done(null, zombie)
             } else {
-                return done(null, false, { message: "La contraseña no es valida" });
+                return done(null, false, { message: "La contaseña no es valida" });
             }
         })
     })

@@ -11,7 +11,6 @@ var zombieSchema = mongoose.Schema({
     bio: String
 });
 
-
 var donothing = () => {
 
 }
@@ -38,7 +37,7 @@ zombieSchema.pre("save", function(done) {
 });
 
 zombieSchema.methods.checkPassword = function(guess, done) {
-    bcrypt.compare(guess, this.password, (err, isMatch) => {
+    bcrypt.compare(guess, this.password, function(err, isMatch) {
         done(err, isMatch);
     });
 }
@@ -48,4 +47,5 @@ zombieSchema.methods.name = function() {
 }
 
 var Zombie = mongoose.model("Zombie", zombieSchema);
+
 module.exports = Zombie;

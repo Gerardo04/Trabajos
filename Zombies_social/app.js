@@ -25,16 +25,17 @@ app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(session({
-    secret: "marioeltiolocodelasalcanatrillas",
+    secret: "mariachion",
     resave: true,
     saveUninitialized: true
 }));
+app.use(flash());
 
 app.use(passport.initialize({
     userProperty: "zombie"
 }));
+app.use(passport.session());
 
-app.use(flash());
 app.use(routers);
 
 app.listen(app.get("port"), () => {

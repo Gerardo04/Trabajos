@@ -1,8 +1,9 @@
 var express = require("express");
 var Zombie = require("./models/zombie");
-var equipamiento = require("./models/addeqip");
+var Equip = require("./models/equipment");
 
 var passport = require("passport");
+
 var router = express.Router();
 
 router.use((req, res, next) => {
@@ -23,6 +24,44 @@ router.get("/", (req, res, next) => {
         });
 
 });
+
+router.get("/equip", (req, res, next) => {
+    Equip.find()
+
+    .exec((err, equipment) => {
+        if (err) {
+            return next(err);
+        }
+        res.render("equip", { equipment: equipment });
+    });
+
+});
+router.get("/Requip", (req, res) => {
+    res.render("Requip");
+});
+router.post("/Requip", (req, res, next) => {
+    var description = req.body.description;
+    var defense = req.body.defense;
+
+    Equip.findOne({ description: description }, (err, equip) => {
+        if (err) {
+            return (err);
+        }
+        if (equip) {
+            req.flash("error", "El nombre de usuario ya lo ha tomado otro zombie");
+            return res.redirect("/Requip");
+        }
+        var newEquip = new Equip({
+            description: description,
+            defense: defense
+        });
+        newEquip.save(next);
+        return res.redirect("/equip");
+    });
+});
+
+
+
 
 router.get("/signup", (req, res) => {
     res.render("signup");
@@ -49,54 +88,7 @@ router.post("/signup", (req, res, next) => {
     });
 });
 
-/*router.get("/index2", (req, res) => {
-    res.render("index2");
-});*/
-router.get("/index2", (req, res) => {
-    equipamiento.find()
-        .exec((err, equipment) => {
-            if (err) {
-                return next(err);
-            }
-            res.render("index2", { equipment: equipment });
-        });
-});
 
-router.get("/equipment", (req, res) => {
-    res.render("equipment");
-});
-
-router.post("/equipment", (req, res, next) => {
-    var description = req.body.description;
-    var defense = req.body.defense;
-    var weight = req.body.weight;
-    var category = req.body.category;
-
-    var newEquip = new equipment({
-        description: description,
-        defense: defense,
-        weight: weight,
-        category: category
-    });
-    newEquip.save(next);
-    return res.redirect("/index2");
-});
-
-router.get("/addeqip", (req, res, next) => {
-    equipamiento.find()
-        .exec((err, equipment) => {
-            if (err) {
-                return next(err);
-            }
-            res.render("addeqip", { equipment: equipment });
-        });
-
-
-});
-
-router.get("/login", (req, res) => {
-    res.render("login");
-});
 
 router.get("/zombies/:username", (req, res, next) => {
     Zombie.findOne({ username: req.params.username }, (err, zombie) => {
@@ -109,14 +101,22 @@ router.get("/zombies/:username", (req, res, next) => {
         res.render("profile", { zombie: zombie });
     });
 });
+router.get("/login", (req, res) => {
+    res.render("login");
+});
+
 router.post("/login", passport.authenticate("login", {
     successRedirect: "/",
     failureRedirect: "/login",
     failureFlash: true
 }));
 
-/*router.get("/edit", ensureAuthenticated, (req, res) => {
+router.get("/logout", (req, res) => {
+    req.logout();
+    res.redirect("/");
+});
 
+/*router.get("/edit", ensureAuthenticated, (req, res) => {
 })
 */
 module.exports = router;
